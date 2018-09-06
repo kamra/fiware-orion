@@ -33,6 +33,7 @@
 
 #include "common/globals.h"
 #include "common/tag.h"
+#include "common/JsonHelper.h"
 #include "alarmMgr/alarmMgr.h"
 
 #include "ngsi/Request.h"
@@ -50,23 +51,14 @@ std::string EntityVector::render
   std::map<std::string, std::string>&  uriParam
 )
 {
-  if (vec.size() == 0)
+  JsonVectorHelper jh;
+
+  for (unsigned int ix = 0; ix < vec.size(); ++ix)
   {
-    return "[]";
+    jh.addRaw(vec[ix]->render(uriParamOptions, uriParam));
   }
 
-  std::string out;
-
-  out += "[" + vec[0]->render(uriParamOptions, uriParam);
-
-  for (unsigned int ix = 1; ix < vec.size(); ++ix)
-  {
-    out += "," + vec[ix]->render(uriParamOptions, uriParam);
-  }
-
-  out += "]";
-
-  return out;
+  return jh.str();
 }
 
 

@@ -824,7 +824,8 @@ std::string CompoundValueNode::render(ApiVersion apiVersion, bool noComma, bool 
 */
 std::string CompoundValueNode::toJson(bool toplevel)
 {
-  std::string out;
+  std::string      out;
+  JsonVectorHelper jh;
 
   switch (valueType)
   {
@@ -845,22 +846,16 @@ std::string CompoundValueNode::toJson(bool toplevel)
     break;
 
   case orion::ValueTypeVector:
-
-    if (childV.size() == 0)
+    for (unsigned int ix = 0; ix < childV.size(); ix++)
     {
-      out = "[]";
+      jh.addRaw(childV[ix]->toJson(false));
     }
-    else {
-      out = "[" + childV[0]->toJson(false);
-      for (unsigned int ix = 1; ix < childV.size(); ix++)
-      {
-        out += "," + childV[ix]->toJson(false);
-      }
-      out += "]";
-    }
+
     break;
 
   case orion::ValueTypeObject:
+    // In thic case we cannot use JsonHelper to build the object, as we don't have a
+    // key-value sequence to invoke addXX() method
     if (childV.size() == 0)
     {
       out = "{}";

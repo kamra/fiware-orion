@@ -283,22 +283,15 @@ std::string ContextElement::toJson
 */
 std::string ContextElement::toJsonValues(void)
 {
-  std::string out = "[";
+  JsonVectorHelper jh;
 
   for (unsigned int ix = 0; ix < contextAttributeVector.size(); ix++)
   {
     ContextAttribute* caP = contextAttributeVector[ix];
-    out += caP->toJsonValue();
-
-    if (ix != contextAttributeVector.size() - 1)
-    {
-      out += ",";
-    }
+    jh.addRaw(caP->toJsonValue());
   }
 
-  out += "]";
-
-  return out;
+  return jh.str();
 }
 
 
@@ -313,7 +306,7 @@ std::string ContextElement::toJsonValues(void)
 */
 std::string ContextElement::toJsonUniqueValues(void)
 {
-  std::string out = "[";
+  JsonVectorHelper jh;
 
   std::map<std::string, bool>  uniqueMap;
 
@@ -330,19 +323,12 @@ std::string ContextElement::toJsonUniqueValues(void)
     }
     else
     {
-      out += value;
+      jh.addRaw(value);
       uniqueMap[value] = true;
-    }
-
-    if (ix != contextAttributeVector.size() - 1)
-    {
-      out += ",";
     }
   }
 
-  out += "]";
-
-  return out;
+  return jh.str();
 }
 
 
