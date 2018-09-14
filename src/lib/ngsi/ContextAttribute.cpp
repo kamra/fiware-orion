@@ -56,7 +56,6 @@ using namespace orion;
 /* ****************************************************************************
 *
 * ContextAttribute::bsonAppendAttrValue -
-*
 */
 void ContextAttribute::bsonAppendAttrValue(BSONObjBuilder& bsonAttr, const std::string& attrType, bool autocast) const
 {
@@ -235,16 +234,6 @@ ContextAttribute::ContextAttribute()
 /* ****************************************************************************
 *
 * ContextAttribute::ContextAttribute - 
-*
-* Note that this constructor moves the compoundValue of the source CA to the
-* CA being constructed (the compoundValueP attribute in the source CA is set to NULL).
-* Another option (closer to copy semantics) would be cloning (using the clone() method in
-* CompoundValueNode class) but by the moment this is not needed by this constructor as
-* all their usage cases suffice with this "move compoundValue instead of cloning" approach.
-*
-* Note however that the treatement of metadata is different: in that case, the metadata
-* in "cloned" from source CA to the CA being constructed.
-*
 */
 ContextAttribute::ContextAttribute(ContextAttribute* caP, bool useDefaultType)
 {
@@ -254,8 +243,8 @@ ContextAttribute::ContextAttribute(ContextAttribute* caP, bool useDefaultType)
   stringValue           = caP->stringValue;
   numberValue           = caP->numberValue;
   boolValue             = caP->boolValue;
-  compoundValueP        = caP->compoundValueP;
-  caP->compoundValueP   = NULL;
+  // FIXME P10: next line could introduce a leak. See discussion/detail at https://github.com/telefonicaid/fiware-orion/issues/3162
+  compoundValueP        = (caP->compoundValueP != NULL)? caP->compoundValueP->clone() : NULL;
   found                 = caP->found;
   skip                  = false;
   typeGiven             = caP->typeGiven;

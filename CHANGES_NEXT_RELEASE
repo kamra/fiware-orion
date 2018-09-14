@@ -7,3 +7,4 @@
 - Hardening: refactor NGSIv2 rendering code (throughput increase up to 33%/365% in entities/subscriptions rendering intensive scenarios) (#1298)
 - Fix: Missing or empty metadata values were not allowed in NGSIv2 create/update operations (#3121)
 - Fix: With NGSIv2 replace operations the geolocalization field is inconsistent in DB (#1142) (#3167)
+- Fix: bug with empty compound values (#3162) -- NOT READY FOR MASTER BRANCH YET
