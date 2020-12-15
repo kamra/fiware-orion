@@ -14,7 +14,7 @@
   * [Context Providers registration and request forwarding](context_providers.md)
   * [Attribute metadata](metadata.md)
   * [Filtering results](filtering.md)
-  * [Multy tenancy](multitenancy.md)
+  * [Multi tenancy](multitenancy.md)
   * [Entity service paths](service_path.md)
   * [Update action types](update_action_types.md)
   * [Context broker federation](federation.md)
